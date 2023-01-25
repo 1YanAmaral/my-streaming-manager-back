@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Streamings {
+  id               Int                @id @default(autoincrement())
+  name             String             @db.VarChar(255)
+  price            Int
+  logo             String             @db.VarChar(255)
+  url              String             @db.VarChar(255)
+  Users_streamings Users_streamings[]
+}
+
+model Users {
+  id               Int                @id @default(autoincrement())
+  name             String             @db.VarChar(255)
+  email            String             @unique @db.VarChar(255)
+  password         String             @db.VarChar(255)
+  expenses         Int
+  Users_streamings Users_streamings[]
+}
+
+model Users_streamings {
+  id          Int        @id @default(autoincrement())
+  userId      Int
+  streamingId Int
+  Streamings  Streamings @relation(fields: [streamingId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Users       Users      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
