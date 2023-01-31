@@ -7,7 +7,8 @@ async function findStreamings() {
 async function findStreamingsByUser(userId: number) {
     return prisma.users_streamings.findMany({
         where: {
-            userId}
+            userId
+        }
     });
 }
 

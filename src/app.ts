@@ -1,6 +1,8 @@
 import express from "express";
 import cors from 'cors';
-import { listStreamings, listTitleSearch, listPopularTitles } from "./controllers/streaming-controller.js";
+import { streamingRouter } from "./routers/streaming-router.js";
+import { userRouter } from "./routers/user-router.js";
+
 
 const server = express();
 server.use(cors());
@@ -10,8 +12,7 @@ server.get("/health", (req, res) => {
   res.send("ok");
 });
 
-server.get("/streamings", listStreamings)
-.get("/titles/:search_value", listTitleSearch)
-.get("/titles/popular/:streamingId", listPopularTitles)
+server.use('/streamings', streamingRouter)
+.use('/user', userRouter)
 
 server.listen(4000, () => console.log("Listening on 4000..."));

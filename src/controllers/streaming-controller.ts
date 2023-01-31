@@ -18,3 +18,9 @@ export async function listPopularTitles(req: Request, res: Response) {
     const result = await streamingServices.searchPopularTitles(streamingId);
     return res.send(result);
 }
+
+export async function listTitleSources(req: Request, res: Response) {
+    const titleId = Number(req.params.titleId);
+    const result = await streamingServices.searchTitleSources(titleId);
+    return res.send(result);
+}

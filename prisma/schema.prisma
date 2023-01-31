@@ -22,6 +22,7 @@ model Users {
   email            String             @unique @db.VarChar(255)
   password         String             @db.VarChar(255)
   expenses         Int
+  Session          Session[]
   Users_streamings Users_streamings[]
 }
 
@@ -31,4 +32,11 @@ model Users_streamings {
   streamingId Int
   Streamings  Streamings @relation(fields: [streamingId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Users       Users      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Session {
+  id     Int    @id @default(autoincrement())
+  token  String @db.VarChar(255)
+  userId Int
+  Users  Users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
