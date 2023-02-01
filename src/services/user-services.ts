@@ -25,17 +25,17 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
     let user = await getUserOrFail(email);
   
     if (!user) {
-      console.log('não acha user')
+     
       const expenses = 0;      
       user = await userRepository.create({name, email, password, expenses});
-      console.log('cria user', user)
+      
     }
-    console.log('achou user')
+    
     const newSession = await sessionRepository.create({
       token,
       userId: user.id,
     });
-    console.log('cria session')
+    
     return {
       user: exclude(user, "password"),
       token,
@@ -45,7 +45,7 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
   async function getUserOrFail(email: string): Promise<GetUserOrFailResult> {
     const user = await userRepository.findByEmail(email);
     //if (!user) throw invalidCredentialsError();
-    console.log('procura user')
+   
     return user;
   }
   
