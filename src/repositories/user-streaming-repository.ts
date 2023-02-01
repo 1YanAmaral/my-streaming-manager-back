@@ -7,10 +7,22 @@ async function createUserStreamings(data) {
     });
 }
 
+async function listUserStreamings(userId: number) {
+    return prisma.users_streamings.findMany({
+        where: {
+            userId,
+        },
+        select: {
+            Streamings: true,
+        }
+    });
+}
+
 
 
 const userStreamingRepository = {
-    createUserStreamings
+    createUserStreamings,
+    listUserStreamings
   };
   
   export default userStreamingRepository;
