@@ -3,9 +3,16 @@ import { Prisma } from "@prisma/client";
 
 
 async function create(data: Prisma.UsersUncheckedCreateInput) {
-    return prisma.users.create({
-      data,
+  try {
+    const user = await prisma.users.create({
+      data
     });
+    console.log(user)
+    return user;
+  } catch (error) {
+    console.log(error)
+  }
+  
   }
   
 async function findByEmail(email: string) {

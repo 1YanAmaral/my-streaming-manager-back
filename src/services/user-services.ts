@@ -1,3 +1,4 @@
+import { Users } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import sessionRepository from "../repositories/session-repository.js";
@@ -18,10 +19,33 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
     };
   }
 
+  async function signInWithGoogle(params: GoogleParams): Promise<SignInResult> {
+    const {name, email, password, token } = params;
+  
+    let user = await getUserOrFail(email);
+  
+    if (!user) {
+      console.log('não acha user')
+      const expenses = 0;      
+      user = await userRepository.create({name, email, password, expenses});
+      console.log('cria user', user)
+    }
+    console.log('achou user')
+    const newSession = await sessionRepository.create({
+      token,
+      userId: user.id,
+    });
+    console.log('cria session')
+    return {
+      user: exclude(user, "password"),
+      token,
+    };
+  }
+
   async function getUserOrFail(email: string): Promise<GetUserOrFailResult> {
     const user = await userRepository.findByEmail(email);
-    if (!user) throw invalidCredentialsError();
-  
+    //if (!user) throw invalidCredentialsError();
+    console.log('procura user')
     return user;
   }
   
@@ -37,7 +61,7 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
   
   async function validatePasswordOrFail(password: string, userPassword: string) {
     const isPasswordValid = await bcrypt.compare(password, userPassword);
-    if (!isPasswordValid) throw invalidCredentialsError();
+    //if (!isPasswordValid) throw invalidCredentialsError();
 
   }
 
@@ -50,20 +74,21 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
   }
   
   
-  export type SignInParams = Pick<User, "email" | "password">;
+  export type SignInParams = Pick<Users, "email" | "password">;
   
-  export type GitHubParams = {
+  export type GoogleParams = {
+    name: "name";
     email: "email";
     password: "password";
     token: "token";
   };
   
   type SignInResult = {
-    user: Pick<User, "id" | "email">;
+    user: Pick<Users, "id" | "email">;
     token: string;
   };
   
-  type GetUserOrFailResult = Pick<User, "id" | "email" | "password">;
+  type GetUserOrFailResult = Pick<Users, "id" | "email" | "password">;
   
   const userService = {
     signIn,
