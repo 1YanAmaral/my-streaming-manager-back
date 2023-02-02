@@ -34,7 +34,7 @@ async function searchPopularTitles(streamingId: number) {
   async function searchTitleSources(titleId: number) {
     try {    
       const result = await axios.get(`https://api.watchmode.com/v1/title/${titleId}/sources/?apiKey=kXvaMl52qNtdHRp3Or1s6nyu3R8zugfrtxCZrh13`)
-      return result.data;
+      return result.data.titles;
     } catch (error) {
       console.log(error)
     }

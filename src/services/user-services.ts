@@ -42,6 +42,17 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
     };
   }
 
+  async function setExpenses(expenses: number, userId: number) {
+    const result = await userRepository.updateExpenses(expenses, userId);
+    return result;
+  }
+
+  async function getExpenses(id: number){
+    const user = await userRepository.findById(id);  
+    return exclude(user, "id", "name", "email", "password");
+  }
+
+
   async function getUserOrFail(email: string): Promise<GetUserOrFailResult> {
     const user = await userRepository.findByEmail(email);
     //if (!user) throw invalidCredentialsError();
@@ -90,9 +101,12 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
   
   type GetUserOrFailResult = Pick<Users, "id" | "email" | "password">;
   
+   
   const userService = {
     signIn,
-    signInWithGoogle
+    signInWithGoogle,
+    setExpenses,
+    getExpenses
   };
   
   export default userService;
