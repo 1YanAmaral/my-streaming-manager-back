@@ -5,7 +5,8 @@ import userStreamingServices from '../services/user-streaming-services.js';
 export async function insertUserStreamings(req: Request, res: Response) {
     try {
         const {selected} = req.body;
-        const result = await userStreamingServices.insertUserStreamings(selected);
+        
+        const result = await userStreamingServices.updateUserStreamings(selected, selected.userId);
         return res.send(result);
         
     } catch (error) {

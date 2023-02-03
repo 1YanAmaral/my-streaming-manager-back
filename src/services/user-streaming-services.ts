@@ -7,6 +7,11 @@ async function insertUserStreamings(data) {
       return result;   
 }
 
+async function updateUserStreamings(data, userId: number) {   
+  const result = await userStreamingRepository.updateUserStreamings(data,userId);
+  return result;   
+}
+
 
 async function getUserStreamings(userId: number) {
     const query = await userStreamingRepository.listUserStreamings(userId);
@@ -15,7 +20,8 @@ async function getUserStreamings(userId: number) {
 }
   const userStreamingServices ={
     insertUserStreamings,
-    getUserStreamings
+    getUserStreamings,
+    updateUserStreamings
 }
 
 export default userStreamingServices;
