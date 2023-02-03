@@ -14,8 +14,7 @@ async function getStreamings() {
 async function searchTitles(search_value: string) {
 try {
   const apiKey = 'kXvaMl52qNtdHRp3Or1s6nyu3R8zugfrtxCZrh13';
-  const search_field = 'name';
-  const result = await axios.get(`https://api.watchmode.com/v1/search/?apiKey=${apiKey}&search_field=${search_field}&search_value=${search_value}`)
+  const result = await axios.get(`https://api.watchmode.com/v1/autocomplete-search/?apiKey=${apiKey}&search_value=${search_value}&search_type=2`)
   return result.data;
 } catch (error) {
   console.log(error)
