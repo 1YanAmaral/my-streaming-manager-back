@@ -48,3 +48,22 @@ export async function signIn(req: Request, res: Response) {
       return res.status(httpStatus.NOT_FOUND).send(error);
     }
   }
+
+  export async function usersPost(req: Request, res: Response) {
+    const { name, email, password } = req.body;
+    console.log(req.body)
+    try {
+      const user = await userService.createUser({ name, email, password });
+      return res.status(httpStatus.CREATED).json({
+        id: user.id,
+        email: user.email,
+      });
+    } catch (error) {
+      if (error.name === "DuplicatedEmailError") {
+        console.log(error);
+        return res.status(httpStatus.CONFLICT).send(error);
+      }
+      console.log(error);
+      return res.status(httpStatus.BAD_REQUEST).send(error);
+    }
+  }

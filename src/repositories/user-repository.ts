@@ -3,15 +3,9 @@ import { Prisma } from "@prisma/client";
 
 
 async function create(data: Prisma.UsersUncheckedCreateInput) {
-  try {
-    const user = await prisma.users.create({
-      data
-    });
-    console.log(user)
-    return user;
-  } catch (error) {
-    console.log(error)
-  }
+  return prisma.users.create({
+    data,
+  });
   
   }
   

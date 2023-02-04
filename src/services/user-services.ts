@@ -84,6 +84,30 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
     return newEntity;
   }
   
+
+  export async function createUser({ name, email, password }: CreateUserParams): Promise<Users> {
+    
+    await validateUniqueEmailOrFail(email);
+  
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const expenses = 0;      
+    return userRepository.create({
+      name,
+      expenses,
+      email,
+      password: hashedPassword,
+    });
+  }
+  
+  async function validateUniqueEmailOrFail(email: string) {
+    const userWithSameEmail = await userRepository.findByEmail(email);
+    /* if (userWithSameEmail) {
+      throw duplicatedEmailError();
+    } */
+  }
+  
+  
+  export type CreateUserParams = Pick<Users, "name" | "email" | "password">;
   
   export type SignInParams = Pick<Users, "email" | "password">;
   
@@ -106,7 +130,8 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
     signIn,
     signInWithGoogle,
     setExpenses,
-    getExpenses
+    getExpenses,
+    createUser
   };
   
   export default userService;
