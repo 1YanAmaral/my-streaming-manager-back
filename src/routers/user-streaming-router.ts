@@ -4,7 +4,7 @@ import { Router } from "express";
 const userStreamingRouter = Router();
 
 userStreamingRouter.post("/", insertUserStreamings)
-.get('/services', getUserStreamings)
+.get('/services/:userId', getUserStreamings)
 
 
 export { userStreamingRouter };

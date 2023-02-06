@@ -17,10 +17,10 @@ export async function insertUserStreamings(req: Request, res: Response) {
 
 export async function getUserStreamings(req: Request, res: Response) {
     try {
-        const {userId} = req.body;
+        const userId = Number(req.params.userId);
+        console.log(userId)
+                //const {userId} = req.body;
         const result = await userStreamingServices.getUserStreamings(userId);
-        
-
         return res.send(result);
         
     } catch (error) {
